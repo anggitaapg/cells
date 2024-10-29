@@ -19,7 +19,7 @@
     <a href="about_us.php" class="nav-item nav-link">About Us</a>
     <a href="projects.php" class="nav-item nav-link">Projects</a>
     <a href="publication.php" class="nav-item nav-link">Publication</a>
-    <a href="partner_and_network.php" class="nav-item nav-link">Partner and Network</a>
+    <a href="lesson_studies.php" class="nav-item nav-link">Lesson And Studies</a>
     <a href="vacancies.php" class="nav-item nav-link">Vacancies</a>
   </div>
 </div>
