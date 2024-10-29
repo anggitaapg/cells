@@ -51,7 +51,7 @@ if (isset($_POST['register'])) {
         $stmt = $koneksi->prepare("INSERT INTO membership (username, email, password) VALUES (?, ?, ?)");
         $stmt->bind_param("sss", $username, $email, $password);
         if ($stmt->execute()) {
-            echo "<script>alert('Pendaftaran berhasil! Silakan login.'); window.location.href = 'login_register.php';</script>";
+            echo "<script>alert('Pendaftaran berhasil! Silakan login.'); window.location.href = 'login.php';</script>";
             exit; // Pastikan untuk exit setelah redirect
         } else {
             echo "<div class='alert alert-danger'>Pendaftaran gagal: " . $koneksi->error . "</div>";
