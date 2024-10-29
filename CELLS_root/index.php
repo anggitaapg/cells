@@ -1,3 +1,23 @@
+<?php
+include_once 'koneksi.php';
+
+// Fetch slides from database
+$sql = "SELECT * FROM slides ORDER BY created_at DESC";
+$result = $koneksi->query($sql);
+$slides = $result->fetch_all(MYSQLI_ASSOC);
+
+$highlights = $koneksi->query("SELECT * FROM highlights ORDER BY id ASC");
+
+// Fetch news from database
+$sql_news = "SELECT * FROM news ORDER BY date DESC";
+$result_news = $koneksi->query($sql_news);
+
+$news_data = $result_news->fetch_all(MYSQLI_ASSOC);
+$news_item = array_slice($news_data, 0, 1); // 4 berita terbaru untuk New Event
+$latest_news = array_slice($news_data, 1, 4); // 4 berita berikutnya untuk Latest
+$other_news = array_slice($news_data, 5); // Sisanya untuk Others
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -34,127 +54,138 @@
 <body>
     <?php include "header.php" ?>
 
-    <!-- Carousel Start -->
+   <!-- Carousel Start -->
     <div class="container-fluid p-0 mb-5">
-
-	  <div class="owl-carousel header-carousel position-relative">
-
-		    <div class="owl-carousel-item position-relative">
-                <img class="img-fluid" src="img/Now_Everyone_Can_Code_1.jpg" alt="Now Everyone Can Code: STEM Workshop Shows Teachers the Possibilities">
-                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(24, 29, 56, .7);">
-                    <div class="container">
-                        <div class="row justify-content-start">
-                            <div class="col-sm-10 col-lg-8">
-                                <h5 class="text-primary text-uppercase mb-3 animated slideInDown">December 30th, 2023</h5>
-                                <h1 class="display-3 text-white animated slideInDown">Now Everyone Can Code: STEM Workshop Shows Teachers the Possibilities</h1>
-                                <p class="fs-5 text-white mb-4 pb-2">On January 25th, 2024, the enthusiasm from December’s Jakarta workshop carried over to a follow-up “Hands-On STEM Coding” event held at Nur Al Rahman School ...</p>
-                                <a href="article7.html" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Read More</a>
+        <div class="owl-carousel header-carousel position-relative">
+            <?php foreach($slides as $slide): ?>
+                <div class="owl-carousel-item position-relative">
+                    <img class="img-fluid" src="CELLS_Admin/img/slides/<?php echo htmlspecialchars($slide['image']); ?>" 
+                        alt="<?php echo htmlspecialchars($slide['title']); ?>">
+                    <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" 
+                        style="background: rgba(24, 29, 56, .7);">
+                        <div class="container">
+                            <div class="row justify-content-start">
+                                <div class="col-sm-10 col-lg-8">
+                                    <h5 class="text-primary text-uppercase mb-3 animated slideInDown">
+                                        <?php echo date('F jS, Y', strtotime($slide['created_at'])); ?>
+                                    </h5>
+                                    <h1 class="display-3 text-white animated slideInDown">
+                                        <?php echo htmlspecialchars($slide['title']); ?>
+                                    </h1>
+                                    <p class="fs-5 text-white mb-4 pb-2">
+                                        <?php echo htmlspecialchars($slide['description']); ?>
+                                    </p>
+                                    <a href="article.php?id=<?php echo $slide['id']; ?>" 
+                                    class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">
+                                        Read More
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="owl-carousel-item position-relative">
-                <img class="img-fluid" src="img/Full_STEAM_Ahead_1.jpg" alt="Full STEAM Ahead: Indonesia Powers Up STEM-Coding in Universities">
-                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(24, 29, 56, .7);">
-                    <div class="container">
-                        <div class="row justify-content-start">
-                            <div class="col-sm-10 col-lg-8">
-                                <h5 class="text-primary text-uppercase mb-3 animated slideInDown">December 28th, 2023</h5>
-                                <h1 class="display-3 text-white animated slideInDown">Full STEAM Ahead: Indonesia Powers Up STEM-Coding in Universities</h1>
-                                <p class="fs-5 text-white mb-4 pb-2">A group of over 23 delegates from universities across Indonesia gathered at Universitas Muhammadiyah Jakarta (UMJ) last ...</p>
-                                <a href="article6.html" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Read More</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="owl-carousel-item position-relative">
-                <img class="img-fluid" src="img/Non_Degree_Training_1.jpg" alt="Non-Degree Training Overseas Program Immerses Indonesian Academics in Japanese Education Practices">
-                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(24, 29, 56, .7);">
-                    <div class="container">
-                        <div class="row justify-content-start">
-                            <div class="col-sm-10 col-lg-8">
-                                <h5 class="text-primary text-uppercase mb-3 animated slideInDown">December 25th, 2023</h5>
-                                <h1 class="display-3 text-white animated slideInDown">Non-Degree Training Overseas Program Immerses Indonesian Academics in Japanese Education Practices</h1>
-                                <p class="fs-5 text-white mb-4 pb-2">Tsukuba, Japan – In November, 18 academics from leading universities across Indonesia participated ...</p>
-                                <a href="article5.html" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Read More</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="owl-carousel-item position-relative">
-                <img class="img-fluid" src="img/Indonesian_Teacher_Assemble_1.png" alt="Indonesian Teachers Assemble: STEM Leadership Workshop Focuses on Building 21st Century Skills">
-                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(24, 29, 56, .7);">
-                    <div class="container">
-                        <div class="row justify-content-start">
-                            <div class="col-sm-10 col-lg-8">
-                                <h5 class="text-primary text-uppercase mb-3 animated slideInDown">December 18th, 2023</h5>
-                                <h1 class="display-3 text-white animated slideInDown">Indonesian Teachers Assemble: STEM Leadership Workshop Focuses on Building 21st Century Skills</h1>
-                                <p class="fs-5 text-white mb-4 pb-2">Bandung, Indonesia – Universitas Pendidikan Indonesia’s (UPI) Center for Excellence of Lesson ...</p>
-                                <a href="article4.html" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Read More</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-			<div class="owl-carousel-item position-relative">
-                <img class="img-fluid" src="img/Envisioning_New_Frontiers_1.jpg" alt="Envisioning New Frontiers: CELLS-DIPUU UPI and UIII’s Partnership Takes Shape">
-                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(24, 29, 56, .7);">
-                    <div class="container">
-                        <div class="row justify-content-start">
-                            <div class="col-sm-10 col-lg-8">
-                                <h5 class="text-primary text-uppercase mb-3 animated slideInDown">December 12th, 2023</h5>
-                                <h1 class="display-3 text-white animated slideInDown">Envisioning New Frontiers: CELLS-DIPUU UPI and UIII’s Partnership Takes Shape</h1>
-                                <p class="fs-5 text-white mb-4 pb-2">Bandung – In the wake of the successful special visitation event, the partnership between ...</p>
-                                <a href="article3.html" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Read More</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-			<div class="owl-carousel-item position-relative">
-                <img class="img-fluid" src="img/Global_Insights_Unleashed_1.jpg" alt="Global Insights Unleashed: Streaming Lesson Study Workshop with Japan’s IDCJ">
-                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(24, 29, 56, .7);">
-                    <div class="container">
-                        <div class="row justify-content-start">
-                            <div class="col-sm-10 col-lg-8">
-                                <h5 class="text-primary text-uppercase mb-3 animated slideInDown">December 4th, 2023</h5>
-                                <h1 class="display-3 text-white animated slideInDown">Global Insights Unleashed: Streaming Lesson Study Workshop with Japan’s IDCJ</h1>
-                                <p class="fs-5 text-white mb-4 pb-2">Bandung, September 5th-6th, 2023 – Esteemed Japanese experts, Professor Atsushi Tsukui and ...</p>
-                                <a href="article2.html" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Read More</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-			<div class="owl-carousel-item position-relative">
-              <img class="img-fluid" src="img/Southeast_Asia_Workshop_1.jpg" alt="SOUTHEAST ASIA (SEA) WORKSHOP: Professional Learning Community Through Lesson Study">
-                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center" style="background: rgba(24, 29, 56, .7);">
-                    <div class="container">
-                        <div class="row justify-content-start">
-                            <div class="col-sm-10 col-lg-8">
-                                <h5 class="text-primary text-uppercase mb-3 animated slideInDown">November 30th, 2023</h5>
-                                <h1 class="display-3 text-white animated slideInDown">SOUTHEAST ASIA (SEA) WORKSHOP: Professional Learning Community Through Lesson Study</h1>
-                                <p class="fs-5 text-white mb-4 pb-2">Bandung, June 11-18, 2023 – The Center for Excellence of Lesson and Learning Studies at the Faculty of ...</p>
-                                <a href="article1.html" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Read More</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+            <?php endforeach; ?>
         </div>
     </div>
     <!-- Carousel End -->
 
+    <!-- Highlight Start -->
+    <div class="container-xxl py-5 category">
+        <div class="container">
+            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+                <h6 class="section-title bg-white text-center text-primary px-3">Highlights</h6>
+                <h1 class="mb-5">Featured Categories</h1>
+            </div>
+            <div class="row g-3">
+                <?php while ($highlight = $highlights->fetch_assoc()) { ?>
+                    <div class="col-lg-4 col-md-6 wow zoomIn" data-wow-delay="0.1s">
+                        <a class="position-relative d-block overflow-hidden" href="<?php echo $highlight['link']; ?>">
+                            <img class="img-fluid" src="<?php echo $highlight['image']; ?>" alt="">
+                            <div class="bg-white text-center position-absolute bottom-0 py-2 px-3" style="width:100%;">
+                                <h5 class="m-0"><?php echo $highlight['title']; ?></h5>
+                                <small class="text-primary"><?php echo $highlight['courses']; ?> Courses</small>
+                            </div>
+                        </a>
+                    </div>
+                <?php } ?>
+            </div>
+        </div>
+    </div>
+    <!-- Highlight End -->
+
+    <!-- News Section -->
+    <section id="news" class="my-5">
+        <div class="container">
+            <div class="row">
+                <!-- New Event Section -->
+                <div class="col-md-6">
+                    <h2>New Event</h2>
+                    <hr>
+                    <?php if (!empty($news_item)): ?>
+                        <?php foreach ($news_item as $news): ?>
+                            <div class="card">
+                                <img src="<?php echo $news['image_url']; ?>" class="card-img-top" alt="Event Image">
+                                <div class="card-body">
+                                    <h5 class="card-title"><?php echo $news['title']; ?></h5>
+                                    <p class="card-text"><?php echo $news['content']; ?></p>
+                                    <a href="<?php echo $news['link_url']; ?>" class="btn btn-primary">Read More</a>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p>No new events available.</p>
+                    <?php endif; ?>
+                </div>
+
+                <!-- Latest Section -->
+                <div class="col-md-6">
+                    <h2>Latest</h2>
+                    <hr>
+                    <?php if (!empty($latest_news)): ?>
+                        <?php foreach ($latest_news as $latest): ?>
+                            <div class="row mb-4">
+                                <div class="col-4">
+                                    <img src="<?php echo $latest['image_url']; ?>" class="img-fluid" alt="Latest Image">
+                                </div>
+                                <div class="col-8">
+                                    <small class="text-muted"><?php echo $latest['date']; ?></small>
+                                    <h5><?php echo $latest['title']; ?></h5>
+                                    <p><?php echo substr($latest['content'], 0, 100); ?>...</p>
+                                    <a href="<?php echo $latest['link_url']; ?>" class="btn btn-link">Read More</a>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p>No latest news available.</p>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Others Section -->
+    <section id="others" class="my-5">
+        <div class="container">
+            <h2>Others</h2>
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+                    <?php if (!empty($other_news)): ?>
+                        <?php foreach ($other_news as $other): ?>
+                            <div class="mb-4">
+                                <small class="text-muted"><?php echo $other['date']; ?></small>
+                                <h5><?php echo $other['title']; ?></h5>
+                                <p><?php echo substr($other['content'], 0, 100); ?>...</p>
+                                <a href="<?php echo $other['link_url']; ?>" class="btn btn-link">Read More</a>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <p>No other news available.</p>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- Service Start -->
 <!--
