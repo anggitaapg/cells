@@ -80,7 +80,7 @@ if (isset($_POST['register'])) {
 <body>
 
 <div class="container">
-    <h2 class="text-center" id="formTitle">Login</h2>
+    <h2 class="text-center" id="formTitle">Login Admin</h2>
 
     <div class="card">
         <!-- Form Login -->

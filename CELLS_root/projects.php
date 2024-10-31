@@ -1,5 +1,5 @@
 <?php
-require 'koneksi.php';
+require '/koneksi.php';
 // echo "./CELLS_Admin/img/".$Foto;
 
 $sql = "SELECT * FROM projek ORDER BY sampul DESC";
@@ -46,7 +46,6 @@ $sql = "SELECT * FROM projek ORDER BY sampul DESC";
       height: 200px; /* Tinggi tetap */
       object-fit: cover; /* Gambar tetap pada proporsi dan menutupi area dengan crop */
       }
-        }
     </style>
 </head>
 
