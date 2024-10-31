@@ -1,15 +1,20 @@
 <?php
 require '../koneksi.php';
-
 session_start();
-if (!isset($_SESSION['email'])) {
+
+// Pastikan pengguna sudah login dan memiliki status admin
+if (!isset($_SESSION['email']) || !isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
+    // Jika tidak login atau bukan admin, arahkan ke halaman login
     header("Location: ./login.php");
     exit();
 }
+
 $nama_admin = "Admin";
 
+// Query data
 $sql = "SELECT * FROM about_us ORDER BY Foto DESC";
- ?>
+?>
+
 
 <!DOCTYPE html>
 <html lang="en">

@@ -8,7 +8,7 @@ if (isset($_POST['login'])) {
     $password = isset($_POST['password']) ? $_POST['password'] : null;
 
     if ($email && $password) {
-        // Query untuk memeriksa email
+        // Query untuk memeriksa apakah email ada di tabel admin
         $stmt = $koneksi->prepare("SELECT * FROM admin WHERE email = ?");
         $stmt->bind_param("s", $email);
         $stmt->execute();
@@ -18,7 +18,9 @@ if (isset($_POST['login'])) {
             $user = $result->fetch_assoc();
             // Memeriksa password
             if (password_verify($password, $user['password'])) {
-                $_SESSION['email'] = $email; // Menyimpan email dalam session
+                $_SESSION['email'] = $email; // Menyimpan email dalam sesi
+                $_SESSION['is_admin'] = true; // Tandai sebagai admin
+
                 echo "<script>alert('Login berhasil!'); window.location.href = './index.php';</script>";
                 exit; // Pastikan untuk exit setelah redirect
             } else {
@@ -59,6 +61,7 @@ if (isset($_POST['register'])) {
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
