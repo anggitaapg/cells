@@ -273,4 +273,92 @@ if (isset($_GET['id_partnet'])) {
     }
 }
 
+//Create Konten
+if (isset($_POST['tambahkonten'])) {
+    $judul = $_POST['judul'];
+    $desc = $_POST['desc'];
+
+    // File upload handling
+    $video = $_FILES['video'];
+    $videoName = $video['name'];
+    $videoTmpName = $video['tmp_name'];
+    $uploadDir = '../membership/video/';
+    $videoPath = $uploadDir . $videoName;
+
+    // Move the uploaded file to the server
+    if (move_uploaded_file($videoTmpName, $videoPath)) {
+        // Insert data into the MySQL database
+        $sql = "INSERT INTO konten (judul, deskripsi, video_url) VALUES ('$judul', '$desc', '$videoPath')";
+        if (mysqli_query($koneksi, $sql)) {
+            echo "Konten berhasil ditambahkan.";
+        } else {
+            echo "Error: " . mysqli_error($koneksi);
+        }
+    } else {
+        echo "Failed to upload video.";
+    }
+}
+
+//Update Konten
+if (isset($_POST['editkonten'])) {
+    $id_konten = $_POST['id_konten'];
+    $judul = $_POST['judul'];
+    $desc = $_POST['deskripsi'];
+    $newVideo = $_FILES['video'];
+
+    // Get the current video URL
+    $query = mysqli_query($koneksi, "SELECT video_url FROM konten WHERE id_konten='$id_konten'");
+    $data = mysqli_fetch_assoc($query);
+    $oldVideoPath = $data['video_url'];
+
+    if ($newVideo['size'] > 0) {
+        // Remove the old video file if a new one is uploaded
+        if (file_exists($oldVideoPath)) {
+            unlink($oldVideoPath);
+        }
+
+        // Upload the new video
+        $videoName = $newVideo['name'];
+        $videoTmpName = $newVideo['tmp_name'];
+        $uploadDir = './img/video/';
+        $videoPath = $uploadDir . $videoName;
+
+        move_uploaded_file($videoTmpName, $videoPath);
+    } else {
+        // Keep the old video if no new video is uploaded
+        $videoPath = $oldVideoPath;
+    }
+
+    // Update record in database
+    $sql = "UPDATE konten SET judul='$judul', deskripsi='$desc', video_url='$videoPath' WHERE id_konten='$id_konten'";
+    if (mysqli_query($koneksi, $sql)) {
+        echo "Konten berhasil diperbarui.";
+    } else {
+        echo "Error: " . mysqli_error($koneksi);
+    }
+}
+
+//Delete Konten
+if (isset($_GET['delete'])) {
+    $id_konten = $_GET['delete'];
+
+    // Fetch the video path before deletion
+    $query = mysqli_query($koneksi, "SELECT video_url FROM konten WHERE id_konten='$id_konten'");
+    $data = mysqli_fetch_assoc($query);
+    $videoPath = $data['video_url'] ?? null;
+
+    // Delete the video file
+    if ($videoPath && file_exists($videoPath)) {
+        unlink($videoPath);
+    }
+
+    // Delete the record from the database
+    $sql = "DELETE FROM konten WHERE id_konten='$id_konten'";
+    if (mysqli_query($koneksi, $sql)) {
+        echo "Konten berhasil dihapus.";
+    } else {
+        echo "Error: " . mysqli_error($koneksi);
+    }
+}
+
 ?>

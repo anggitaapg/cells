@@ -76,6 +76,10 @@ $sql = "SELECT * FROM about_us ORDER BY Foto DESC";
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Projek
                             </a>
+                            <a class="nav-link" href="konten.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Open Lesson
+                            </a>
                           </div>
                 </nav>
             </div>

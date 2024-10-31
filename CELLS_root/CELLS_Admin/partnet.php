@@ -75,6 +75,10 @@ $sql = "SELECT * FROM partnet ORDER BY logo DESC";
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Projek
                             </a>
+                            <a class="nav-link" href="konten.php">
+                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                                Open Lesson
+                            </a>
                           </div>
                 </nav>
             </div>
@@ -86,7 +90,7 @@ $sql = "SELECT * FROM partnet ORDER BY logo DESC";
                         <div class="card mb-4">
                             <div class="card-header">
                               <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                              data-bs-target="#modalpartnet">Tambah Patner dan Network</button>
+                              data-bs-target="#modalpartnet">Tambah Partner dan Network</button>
                             </div>
                             <div class="card-body">
                               <div class="table-responsive">
