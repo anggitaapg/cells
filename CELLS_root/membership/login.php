@@ -150,6 +150,7 @@ if (isset($_POST['register'])) {
             <p class="mt-3">Sudah punya akun? <a href="#" id="showLogin">Login di sini</a></p>
         </form>
     </div>
+    <a href="../lesson_studies.php" class="btn btn-secondary">Kembali</a>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
